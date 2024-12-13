@@ -1,0 +1,36 @@
+# Application Configuration
+app:
+  name: sport-backend
+  env: development
+
+# Server Configuration
+server:
+  host: 0.0.0.0
+  port: 8080
+
+# Database Configuration
+database:
+  type: postgres
+  host: localhost
+  port: 5432
+  username: user
+  password: pass
+  dbname: sport-backend
+
+
+
+# Logging Configuration
+logging:
+  level: info
+  path: /var/log/myapp.log
+
+# Redis Configuration
+redis:
+  host: 127.0.0.1
+  port: 6379
+  password: redis_pass
+
+# JWT Configuration
+jwt:
+  secretKey: your_jwt_secret_key
+  expirationTime: 24h

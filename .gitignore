@@ -1,0 +1,83 @@
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test binary, build with 'go test -c'
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Go workspace file
+go.work
+
+# Go vendor directory
+vendor/
+
+# Go build output
+*.o
+*.a
+*.so
+*.lo
+*.la
+
+# Go module files
+go.sum
+
+# IDE configuration files
+.vscode/
+.idea/
+
+# Editor backup files
+*~
+
+# Vim swap files
+*.swp
+*.swo
+
+# Emacs backup files
+*#
+
+# OSX system files
+.DS_Store
+
+# Windows image file caches
+Thumbs.db
+
+# Python-related files (if you're using Python in your Go project)
+__pycache__/
+*.py[cod]
+
+# Ctags
+tags
+
+# Generated protocol buffer files
+*.pb.go
+
+# Generated mock files
+*_mock.go
+
+# Generated SQL files
+*.sql.go
+
+# Go test cache
+test/cache
+
+# Coverage reports
+coverage.txt
+
+# Go build cache
+# If you're using Go modules, you might want to exclude this
+# /pkg/
+
+# Tools for managing dependencies
+# If you're using Go modules, you might want to exclude this
+# /vendor/
+
+# Generated documentation
+docs/
+
+# Binary artifacts
+bin/
