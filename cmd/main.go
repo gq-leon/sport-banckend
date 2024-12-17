@@ -1,29 +1,23 @@
 package main
 
 import (
-	"log/slog"
-	"os"
+	"time"
 
-	"github.com/gq-leon/sport-backend/internal/adapter/config"
-	"github.com/gq-leon/sport-backend/internal/adapter/logger"
+	"github.com/gin-gonic/gin"
+
+	"github.com/gq-leon/sport-backend/api/route"
+	"github.com/gq-leon/sport-backend/bootstrap"
 )
 
 func main() {
-	cfg, err := config.New()
-	if err != nil {
-		slog.Error("Error loading environment variables", "error", err)
-		os.Exit(1)
-	}
+	app := bootstrap.App()
+	env := app.Env
+	timeout := time.Duration(env.ContextTimeout) * time.Second
 
-	logger.Set(cfg.App)
-	slog.Info("Starting the application", "app", cfg.App.Name, "env", cfg.App.Env)
+	db := app.Mongo.Database(env.DBName)
+	defer app.CloseDBConnection()
 
-	// 初始化数据库
-	slog.Info("Successfully connected to the database", "db", cfg.Database.Type)
-
-	// 执行数据库迁移脚本
-	slog.Info("Successfully migrated the database")
-
-	// 初始化缓存服务
-
+	serve := gin.Default()
+	route.Setup(env, timeout, db, serve)
+	serve.Run(env.ServerAddress)
 }
