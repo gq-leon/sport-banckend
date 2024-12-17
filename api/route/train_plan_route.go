@@ -23,6 +23,7 @@ func NewTrainPlanRouter(env *bootstrap.Env, timeout time.Duration, db mongo.Data
 	{
 		group.GET("/train-plan/today-workout", tpc.TodayWorkout)
 		group.POST("/train-plan", tpc.Create)
+		group.POST("/train-plan/update", tpc.Update)
 		group.POST("/train-plan/del", tpc.Delete)
 		group.POST("/train-plan/complete", tpc.UpdateCompletion)
 	}

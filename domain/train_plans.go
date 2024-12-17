@@ -35,15 +35,3 @@ type TrainPlan struct {
 	Sets      int32              `bson:"sets" json:"sets"`           // 组数
 	Completed int32              `bson:"completed" json:"completed"` // 完成组数
 }
-
-func (tp *TrainPlan) Completion() {
-	if tp.Sets > tp.Completed {
-		tp.Completed += 1
-	}
-}
-
-func (tp *TrainPlan) InCompletion() {
-	if tp.Completed >= 1 {
-		tp.Completed -= 1
-	}
-}

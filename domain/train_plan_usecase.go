@@ -14,17 +14,18 @@ type AddPlanRequest struct {
 	Completed int32   `bson:"completed"` // 完成组数
 }
 
+type UpdatePlanRequest struct {
+	ID string `json:"id"`
+	AddPlanRequest
+}
+
 type DelPlanRequest struct {
 	Id string `json:"id"`
 }
 
 type UpdateProgressPlanRequest struct {
-	Id   string `json:"id"`
-	Type uint   `json:"type"` // 1:完成  2:取消
-}
-
-func (req *UpdateProgressPlanRequest) IsCompleted() bool {
-	return req.Type == 1
+	Id        string `json:"id"`
+	Completed int32  `json:"completed"` // 当前完成几组
 }
 
 type TodayWorkoutResponse struct {

@@ -1,11 +1,13 @@
 package controller
 
 import (
+	"errors"
 	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 
 	"github.com/gq-leon/sport-backend/bootstrap"
 	"github.com/gq-leon/sport-backend/domain"
@@ -48,16 +50,44 @@ func (tpc *TrainPlanController) Create(c *gin.Context) {
 		return
 	}
 
-	plans, err := tpc.TrainPlanUseCase.GetPlansByDate(c, userId, date)
+	domain.SuccessResponse(c, nil)
+}
+
+func (tpc *TrainPlanController) Update(c *gin.Context) {
+	var request domain.UpdatePlanRequest
+	if err := c.ShouldBindJSON(&request); err != nil {
+		domain.ErrorResponse(c, http.StatusBadRequest, err)
+		return
+	}
+
+	trainPlan, err := tpc.TrainPlanUseCase.GetPlanByID(c, request.ID)
 	if err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			domain.ErrorResponse(c, http.StatusNotFound, errors.New("无法编辑不存在计划"))
+			return
+		}
 		domain.ErrorResponse(c, http.StatusInternalServerError, err)
 		return
 	}
 
-	domain.SuccessResponse(c, domain.TodayWorkoutResponse{
-		Date:      date,
-		Exercises: plans,
-	})
+	if err = tpc.TrainPlanUseCase.UpdateByID(c, request.ID, &domain.TrainPlan{
+		ID:        trainPlan.ID,
+		UserID:    trainPlan.UserID,
+		Date:      request.Date,
+		Name:      request.Name,
+		Category:  request.Category,
+		Reps:      request.Reps,
+		Weight:    request.Weight,
+		Distance:  request.Distance,
+		Duration:  request.Duration,
+		Sets:      request.Sets,
+		Completed: request.Completed,
+	}); err != nil {
+		domain.ErrorResponse(c, http.StatusInternalServerError, err)
+		return
+	}
+
+	domain.SuccessResponse(c, nil)
 }
 
 func (tpc *TrainPlanController) Delete(c *gin.Context) {
@@ -107,12 +137,7 @@ func (tpc *TrainPlanController) UpdateCompletion(c *gin.Context) {
 		return
 	}
 
-	if request.IsCompleted() {
-		trainPlan.Completion()
-	} else {
-		trainPlan.InCompletion()
-	}
-
+	trainPlan.Completed = request.Completed
 	if err = tpc.TrainPlanUseCase.UpdateByID(c, request.Id, &trainPlan); err != nil {
 		domain.ErrorResponse(c, http.StatusInternalServerError, err)
 		return

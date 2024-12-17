@@ -20,4 +20,5 @@ func Setup(env *bootstrap.Env, timeout time.Duration, db mongo.Database, serve *
 	protectedRouter := serve.Group("api/v1")
 	protectedRouter.Use(middleware.JwtAuthMiddleware(env.AccessTokenSecret))
 	NewTrainPlanRouter(env, timeout, db, protectedRouter)
+	NewAttendanceRouter(env, timeout, db, protectedRouter)
 }
