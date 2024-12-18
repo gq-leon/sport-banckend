@@ -1,0 +1,45 @@
+services:
+  backend:
+    image: registry.cn-chengdu.aliyuncs.com/custom-gq/sport-backend:v1.0.0
+    container_name: gym-backend
+    restart: always
+    volumes:
+      - .env:/.env
+    ports:
+      - "5009:8080"
+    depends_on:
+      - mongo
+    networks:
+      - gym-network
+
+  frontend:
+    image: registry.cn-chengdu.aliyuncs.com/forerunner/sport-frontend:v1.0.0
+    container_name: gym-frontend
+    restart: always
+    ports:
+      - "5010:80"
+    environment:
+      API_URL: "http://backend:8080"
+    networks:
+      - gym-network
+
+  mongo:
+    image: docker.tech-gym.fun/mongo  # 使用官方MongoDB镜像
+    container_name: mongo-container  # 为容器指定名称
+    restart: always
+    ports:
+      - "27017:27017"  # 将容器的27017端口映射到宿主机的27017端口
+    volumes:
+      - mongo-data:/data/db  # 持久化MongoDB数据
+    environment: # 设置环境变量，这里没有设置用户名和密码
+      MONGO_INITDB_ROOT_USERNAME: ""  # 不设置用户名
+      MONGO_INITDB_ROOT_PASSWORD: ""  # 不设置密码
+    networks:
+      - gym-network
+
+volumes:
+  mongo-data:  # 定义数据卷
+
+networks:
+  gym-network:
+    driver: bridge
