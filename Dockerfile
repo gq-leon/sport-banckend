@@ -1,4 +1,4 @@
-FROM docker.tech-gym.fun/golang:1.23.3-alpine AS builder
+FROM golang:1.23.3-alpine AS builder
 
 WORKDIR /app
 
@@ -17,7 +17,7 @@ COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o sport-backend ./cmd/main.go
 
 # 第二阶段：运行阶段，使用Alpine Linux作为基础镜像
-FROM docker.tech-gym.fun/alpine:latest
+FROM alpine:latest
 
 # 安装基本的运行时依赖
 RUN apk --no-cache add ca-certificates tzdata && \
