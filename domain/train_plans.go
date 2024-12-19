@@ -14,6 +14,11 @@ const (
 	TrainPlanCardio   = "cardio"
 )
 
+var TrainPlanCategory = map[string]string{
+	TrainPlanStrength: "力量训练",
+	TrainPlanCardio:   "有氧运动",
+}
+
 type TrainPlanRepository interface {
 	Create(ctx context.Context, plan *TrainPlan) error
 	Update(ctx context.Context, id string, plan *TrainPlan) error
@@ -34,4 +39,15 @@ type TrainPlan struct {
 	Duration  int32              `bson:"duration" json:"duration"`   // 时间，m
 	Sets      int32              `bson:"sets" json:"sets"`           // 组数
 	Completed int32              `bson:"completed" json:"completed"` // 完成组数
+}
+
+func (t *TrainPlan) GetID() string {
+	return t.ID.Hex()
+}
+
+func (t *TrainPlan) GetType() string {
+	if category, ok := TrainPlanCategory[t.Category]; ok {
+		return category
+	}
+	return "未知训练"
 }
