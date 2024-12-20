@@ -1,0 +1,10 @@
+services:
+  redis:
+    image: docker.tech-gym.fun/redis:alpine  # 使用最小化的redis镜像
+    container_name: redis-dev
+    ports:
+      - "6379:6379"  # 将宿主机器的 6379 端口映射到容器的 6379 端口
+    volumes:
+      - ./data:/data  # 将宿主机器的 ./data 目录挂载到容器的 /data 目录
+    restart: unless-stopped  # 容器崩溃时自动重启，除非手动停止
+    command: [ "redis-server", "--appendonly", "yes" ]  # 启动redis并启用持久化

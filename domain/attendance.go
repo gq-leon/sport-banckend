@@ -8,6 +8,7 @@ import (
 
 const (
 	CollectionAttendance = "attendances"
+	AttendanceGym        = "健身房"
 )
 
 type AttendanceRepository interface {
@@ -22,4 +23,8 @@ type Attendance struct {
 	Time     string             `bson:"time" json:"time"`
 	Type     string             `bson:"type" json:"type"`
 	Location string             `bson:"location" json:"location"`
+}
+
+type CheckInRequest struct {
+	Date []string `bson:"date" json:"date"`
 }

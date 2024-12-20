@@ -9,6 +9,7 @@ services:
       - "5009:8080"
     depends_on:
       - mongo
+      - redis
     networks:
       - gym-network
 
@@ -20,6 +21,8 @@ services:
       - "5010:80"
     environment:
       API_URL: "http://backend:8080"
+    depends_on:
+      - backend
     networks:
       - gym-network
 
@@ -37,8 +40,19 @@ services:
     networks:
       - gym-network
 
+  redis:
+    image: docker.tech-gym.fun/redis:alpine  # 使用最小化的redis镜像
+    container_name: redis-dev
+    volumes:
+      - redis-data:/data  # 将宿主机器的 ./data 目录挂载到容器的 /data 目录
+    restart: unless-stopped  # 容器崩溃时自动重启，除非手动停止
+    command: [ "redis-server", "--appendonly", "yes" ]  # 启动redis并启用持久化
+    networks:
+      - gym-network
+
 volumes:
   mongo-data:  # 定义数据卷
+  redis-data:
 
 networks:
   gym-network:

@@ -21,5 +21,6 @@ func NewAttendanceRouter(env *bootstrap.Env, timeout time.Duration, db mongo.Dat
 	{
 		group.POST("/attendance", ac.Create)
 		group.GET("/attendance", ac.List)
+		group.POST("/attendance/back-check-in", ac.BackDateCheckIn)
 	}
 }

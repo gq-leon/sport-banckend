@@ -1,6 +1,8 @@
 package bootstrap
 
-import "github.com/gq-leon/sport-backend/pkg/mongo"
+import (
+	"github.com/gq-leon/sport-backend/pkg/mongo"
+)
 
 type Application struct {
 	Env   *Env
