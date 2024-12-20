@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/gq-leon/sport-backend/domain"
+	"github.com/gq-leon/sport-backend/internal/util"
 	"github.com/gq-leon/sport-backend/pkg/redis"
 )
 
@@ -55,7 +56,7 @@ func (au *attendanceUseCase) BackDateCheckIn(ctx context.Context, userID string,
 
 		var (
 			yearDay = parse.YearDay()
-			key     = fmt.Sprintf("checkin_%d-%s", parse.Year(), userID)
+			key     = util.GenerateCheckInKey(userID)
 		)
 		if err = redis.Client.SetBit(ctx, key, int64(yearDay-1), 1).Err(); err != nil {
 			errStr = fmt.Sprintf("%s | %s", errStr, err.Error())

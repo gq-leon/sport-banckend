@@ -22,4 +22,5 @@ func Setup(env *bootstrap.Env, timeout time.Duration, db mongo.Database, serve *
 	NewTrainPlanRouter(env, timeout, db, protectedRouter)
 	NewAttendanceRouter(env, timeout, db, protectedRouter)
 	NewCalenderRouter(env, timeout, db, protectedRouter)
+	NewStatsRouter(env, timeout, db, protectedRouter)
 }
